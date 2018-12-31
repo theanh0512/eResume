@@ -62,27 +62,27 @@
     <!-- End Profil Image-->
     <!-- menu -->
     <nav>
-      <a class="menu_reg" href="#section1">
+      <a class="menu_reg" href="#sectionabout">
         <span class="menu_name">ABOUT</span>
         <span class="fa fa-home"></span>
       </a>
-      <a class="menu_reg" href="#section2">
+      <a class="menu_reg" href="#sectioneducation">
         <span class="menu_name">EDUCATION</span>
         <span class="fa fa-graduation-cap"></span>
       </a>
-      <a class="menu_reg" href="#section3">
+      <a class="menu_reg" href="#sectionworkexp">
         <span class="menu_name">WORK EXPERIENCE</span>
         <span class="fa fa-suitcase"></span>
       </a>
-      <a class="menu_reg" href="#section4">
+      <a class="menu_reg" href="#sectionproject">
         <span class="menu_name">PROJECT EXPERIENCE</span>
         <span class="fa fa-tasks"></span>
       </a>
-      <a class="menu_reg" href="#section5">
+      <a class="menu_reg" href="#sectionskill">
         <span class="menu_name">SKILLS</span>
         <span class="fa fa-diamond"></span>
       </a>
-      <a class="menu_reg" href="#section6">
+      <a class="menu_reg" href="#sectioncontact">
         <span class="menu_name">CONTACT</span>
         <span class="fa fa-paper-plane"></span>
       </a>
@@ -142,7 +142,7 @@
     <!-- End Header -->
     <!-- hs-content-wrapper -->
     <div class="hs-content-wrapper">
-      <article class="hs-content" id="section1">
+      <article class="hs-content" id="sectionabout">
         <span class="sec-icon fa fa-home"></span>
         <div class="hs-inner">
           <span class="before-title">.01</span>
@@ -387,7 +387,7 @@
           </div>
         </div>
       </article>
-      <article class="hs-content" id="section2">
+      <article class="hs-content" id="sectioneducation">
         <span class="sec-icon fa fa-graduation-cap"></span>
         <div class="hs-inner">
           <span class="before-title">.02</span><h2 class="mainpage_title">EDUCATION</h2>
@@ -447,7 +447,7 @@
           </div>
         </div>
       </article>
-      <article class="hs-content" id="section3">
+      <article class="hs-content" id="sectionworkexp">
         <span class="sec-icon fa fa-suitcase"></span>
         <div class="hs-inner">
           <span class="before-title">.03</span>
@@ -591,7 +591,7 @@
           </div>
         </div>
       </article>
-      <article class="hs-content" id="section4">
+      <article class="hs-content" id="sectionproject">
         <span class="sec-icon fa fa-tasks"></span>
         <div class="hs-inner">
           <span class="before-title">.04</span>
@@ -710,7 +710,7 @@
           </div>
         </div>
       </article>
-      <article class="hs-content" id="section5">
+      <article class="hs-content" id="sectionskill">
         <span class="sec-icon fa fa-diamond"></span>
         <div class="hs-inner">
           <span class="before-title">.05</span>
@@ -802,7 +802,7 @@
           </div>
         </div>
       </article>
-      <article class="hs-content" id="section6">
+      <article class="hs-content" id="sectioncontact">
         <span class="sec-icon fa fa-paper-plane"></span>
         <div class="hs-inner">
           <span class="before-title">.06</span><h2 class="mainpage_title">CONTACT</h2>
@@ -914,8 +914,8 @@
           // get the url from history state (e.g. section=3) and extract the section number
           var section = section || History.getState().url.queryStringToJSON().section,
             isHome = (section === undefined),
-            // we will jump to the section1 section if theres no section
-            $article = $(section ? '#' + 'section' + section : '#' + 'section1');
+            // we will jump to the sectionabout section if theres no section
+            $article = $(section ? '#' + 'section' + section : '#' + 'sectionabout');
           if ($article.length) {
             // left / top of the element
             var left = $article.position().left,
@@ -1027,10 +1027,10 @@
           });
 
           $('.homesection').on('click', function () {
-            _saveState(1);
+            _saveState("about");
           });
           $('.contact-button').on('click', function () {
-            _saveState(8);
+            _saveState("contact");
           });
 
           // scrolls to the top of the page.
@@ -1069,16 +1069,25 @@
           $container.on("click", ".previous-page", function (event) {
             $(".next-page").show();
             var section = section || History.getState().url.queryStringToJSON().section;
-            if (section == undefined) {
-              _saveState(1);
-            } else {
-              if (section != 1) {
-                _saveState(section - 1);
-
-                if ((section - 1) == 1) {
-                  $(".previous-page").hide();
-                }
-              }
+            switch (section) {
+              case "about":
+                $(".previous-page").hide();
+                break;
+              case "education":
+                _saveState("about");
+                break;
+              case "workexp":
+                _saveState("education");
+                break;
+              case "project":
+                _saveState("workexp");
+                break;
+              case "skill":
+                _saveState("project");
+                break;
+              case "contact":
+                _saveState("skill");
+                break;
             }
             return false;
           });
@@ -1086,15 +1095,25 @@
             $(".previous-page").show();
             var section = section || History.getState().url.queryStringToJSON().section;
 
-            if (section == undefined) {
-              _saveState(2);
-            } else {
-              if (section != $articles.length) {
-                _saveState(section + 1);
-                if ((section + 1) == $articles.length) {
-                  $(".next-page").hide();
-                }
-              }
+            switch (section) {
+              case "about":
+                _saveState("education");
+                break;
+              case "education":
+                _saveState("workexp");
+                break;
+              case "workexp":
+                _saveState("project");
+                break;
+              case "project":
+                _saveState("skill");
+                break;
+              case "skill":
+                _saveState("contact");
+                break;
+              default:
+                _saveState("about");
+                break;
             }
             return false;
           });
